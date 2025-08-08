@@ -1,4 +1,5 @@
 "use client";
+import { log } from "node:console";
 import React, { useState } from "react";
 
 const AppointmentForm = () => {
@@ -29,9 +30,41 @@ const AppointmentForm = () => {
     setFormData((prev) => ({ ...prev, reports: file }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+
+    // Prepare data as JSON
+    const data = {
+      fullName: formData.fullName,
+      age: formData.age,
+      primaryConcern: formData.primaryConcern,
+      preferredDate: formData.preferredDate,
+      preferredTime: formData.preferredTime,
+      phone: formData.phone,
+      email: formData.email,
+      reports: formData.reports,
+    };
+
+    console.log("Submitting appointment form:", data);
+
+    try {
+      const res = await fetch("/api/formsubmission", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), // send the JSON string
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        alert("Appointment booked!");
+      } else {
+        alert("Error: " + result.error);
+      }
+    } catch (err) {
+      alert("Submission failed.");
+    }
   };
 
   return (

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const CallToAction: React.FC = () => {
@@ -8,25 +9,25 @@ const CallToAction: React.FC = () => {
           Ready to start your journey?
         </h2>
         <p className="text-lg sm:text-2xl text-black font-medium mt-6">
-          Book your consultation today and take the first step towards pain-free movement.
-          Same-day diagnosis available at our Channapatna facility.
+          Book your consultation today and take the first step towards pain-free
+          movement. Same-day diagnosis available at our Channapatna facility.
         </p>
 
         <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-8">
-          <a
-            href="https://sitemap-website-weaver.lovable.app/book-consultation"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/book-consultation"
             className="bg-blue-700 text-white text-lg sm:text-xl px-6 py-3 rounded-lg hover:bg-blue-800 transition-colors"
           >
             Book Consultation
-          </a>
-          <button
-            type="button"
-            className="border-2 border-black text-black text-lg sm:text-xl px-6 py-3 rounded-lg bg-white hover:bg-gray-100 transition-colors"
-          >
-            Call Now: 080-xxx-xxx
-          </button>
+          </Link>
+          <Link href='tel:080-xxx-xxx'>
+            <button
+              type="button"
+              className="border-2 border-black text-black text-lg sm:text-xl px-6 py-3 rounded-lg bg-white hover:bg-gray-100 transition-colors"
+            >
+              Call Now: 080-xxx-xxx
+            </button>
+          </Link>
         </div>
       </div>
     </section>

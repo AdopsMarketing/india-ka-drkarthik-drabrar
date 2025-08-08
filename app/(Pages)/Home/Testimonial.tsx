@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Testimonial: React.FC = () => {
@@ -20,10 +21,11 @@ const Testimonial: React.FC = () => {
             </cite>
           </div>
         </div>
-
-        <button className="bg-blue-700 hover:bg-blue-800 text-white text-lg sm:text-xl font-montserrat font-semibold px-6 py-3 rounded-lg mt-8 self-center transition-colors">
-          View patient success stories
-        </button>
+        <Link href="/patient-stories" className="mx-auto">
+          <button className="bg-blue-700 hover:bg-blue-800 text-white text-lg sm:text-xl font-montserrat font-semibold px-6 py-3 rounded-lg mt-8 self-center transition-colors">
+            View patient success stories
+          </button>
+        </Link>
       </div>
     </section>
   );

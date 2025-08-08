@@ -31,18 +31,20 @@ const VideoTestimonial: React.FC<VideoTestimonialProps> = ({
 
   return (
     <article
-      className={`bg-[rgba(4,14,50,1)] shadow-2xl flex w-full max-w-[1324px] flex-col overflow-hidden items-stretch text-white font-semibold mt-[69px] rounded-[22px] max-md:max-w-full max-md:mt-10 relative ${className}`}
+      className={`bg-[#040E32] shadow-2xl flex w-full max-w-6xl mx-auto flex-col overflow-hidden items-stretch text-white font-semibold mt-16 rounded-2xl relative ${className}`}
     >
+      {/* Video Section */}
       <div className="relative group">
         <video
           ref={videoRef}
-          className="w-full h-auto rounded-t-[22px]"
+          className="w-full h-auto rounded-t-2xl"
           poster="https://api.builder.io/api/v1/image/assets/defa096633aa4aef9cdf086d12d7de68/video-poster?placeholderIfAbsent=true"
         >
           <source src={videoSrc} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
+        {/* Play/Pause Overlay */}
         <div
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
             isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
@@ -50,43 +52,45 @@ const VideoTestimonial: React.FC<VideoTestimonialProps> = ({
         >
           <button
             onClick={handlePlayPause}
-            className="bg-[rgba(26,76,163,1)] flex items-center gap-2.5 text-[22px] text-white justify-center px-[50px] py-[22px] rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="bg-[#1A4CA3] flex items-center gap-2.5 text-lg sm:text-xl px-10 py-5 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300"
             aria-label={isPlaying ? "Pause video" : "Play video"}
           >
             <img
               src="https://api.builder.io/api/v1/image/assets/defa096633aa4aef9cdf086d12d7de68/a399acf896c263f3ea31166fab24193e8573dfb2?placeholderIfAbsent=true"
               alt="Play icon"
-              className="aspect-[1] object-contain w-7 self-stretch shrink-0 my-auto"
+              className="w-6 h-6"
             />
-            <span className="self-stretch my-auto font-montserrat">
-              {isPlaying ? "Pause Video" : "Watch Video"}
-            </span>
+            <span className="font-montserrat">{isPlaying ? "Pause Video" : "Watch Video"}</span>
           </button>
         </div>
 
-        <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded text-sm">
+        {/* Duration Label */}
+        <div className="absolute bottom-4 left-4 bg-black/80 text-white px-3 py-1 rounded text-xs sm:text-sm">
           <time>{duration}</time>
         </div>
       </div>
 
-      <div className="bg-white flex w-full flex-col overflow-hidden text-black pl-[49px] py-14 rounded-[0px_0px_22px_22px] max-md:max-w-full max-md:pl-5">
-        <h2 className="text-[38px] max-md:max-w-full font-poppins">{title}</h2>
-        <p className="text-[28px] font-medium self-stretch mt-7 max-md:max-w-full font-montserrat">
+      {/* Text Content Section */}
+      <div className="bg-white text-black px-6 sm:px-10 py-10 rounded-b-2xl">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-poppins">
+          {title}
+        </h2>
+        <p className="text-lg sm:text-xl font-medium mt-4 font-montserrat">
           {description}
         </p>
+
+        {/* Watch Button */}
         <button
           onClick={handlePlayPause}
-          className="bg-[rgba(26,76,163,1)] w-1/4 mt-5 flex items-center gap-2.5 text-[22px] text-white justify-center px-[40px] py-[22px] rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="bg-[#1A4CA3] mt-6 flex items-center gap-2.5 text-base sm:text-lg text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300"
           aria-label={isPlaying ? "Pause video" : "Play video"}
         >
           <img
             src="https://api.builder.io/api/v1/image/assets/defa096633aa4aef9cdf086d12d7de68/a399acf896c263f3ea31166fab24193e8573dfb2?placeholderIfAbsent=true"
             alt="Play icon"
-            className="aspect-[1] object-contain w-7 self-stretch shrink-0 my-auto"
+            className="w-6 h-6"
           />
-          <span className="self-stretch my-auto font-montserrat">
-            Watch Video
-          </span>
+          <span className="font-montserrat">Watch Video</span>
         </button>
       </div>
     </article>

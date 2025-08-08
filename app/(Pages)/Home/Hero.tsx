@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Hero: React.FC = () => {
@@ -61,9 +62,11 @@ const Hero: React.FC = () => {
 
             {/* CTA Buttons */}
             <div className="flex gap-4 mt-8 text-white font-semibold">
-              <button className="bg-blue-700 hover:bg-blue-800 font-montserrat px-6 py-3 rounded-lg transition-colors">
-                Book Consultation
-              </button>
+              <Link href="/book-consultation">
+                <button className="bg-blue-700 hover:bg-blue-800 font-montserrat px-6 py-3 rounded-lg transition-colors">
+                  Book Consultation
+                </button>
+              </Link>
               <button className="bg-green-500 hover:bg-green-600 font-montserrat px-6 py-3 rounded-lg transition-colors">
                 WhatsApp Chat
               </button>
