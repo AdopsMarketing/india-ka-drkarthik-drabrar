@@ -1,5 +1,5 @@
 import React from 'react';
-import FAQ from './FAQ';
+import FAQ from '../../../Components/FAQ/FAQ';
 
 interface InfoCard {
   title: string;

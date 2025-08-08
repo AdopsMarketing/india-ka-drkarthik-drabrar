@@ -55,7 +55,7 @@ const Blog = () => {
 
   return (
     <>
-      <div className="w-full container mx-auto">
+      <div className="container mx-auto">
         <main>
           <Hero />
 

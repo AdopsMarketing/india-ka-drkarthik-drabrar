@@ -2,7 +2,6 @@ import React from "react";
 import Hero from "./Hero";
 import TreatmentCard from "./TreatmentCard";
 import TreatmentSection from "./TreatmentSection";
-import FAQ from "./FAQ";
 
 const Index = () => {
   const treatmentCards = [

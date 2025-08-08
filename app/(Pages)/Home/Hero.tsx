@@ -6,11 +6,11 @@ const Hero: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-5 w-full">
         {/* Left Image Section */}
         <div className="w-full md:w-6/12">
-          <div className="relative h-[600px] md:h-[900px] overflow-hidden rounded-xl">
+          <div className="relative h-[500px] md:h-[900px] overflow-hidden rounded-xl">
             <img
               src="https://api.builder.io/api/v1/image/assets/TEMP/ee9af2b13069a0bf21a4650f87836869af8a4275?placeholderIfAbsent=true"
               alt="Medical background"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-contain md:object-cover"
             />
           </div>
         </div>
@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 mt-8 text-white font-semibold">
+            <div className="flex gap-4 mt-8 text-white font-semibold">
               <button className="bg-blue-700 hover:bg-blue-800 font-montserrat px-6 py-3 rounded-lg transition-colors">
                 Book Consultation
               </button>

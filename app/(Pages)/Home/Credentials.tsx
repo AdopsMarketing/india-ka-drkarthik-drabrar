@@ -2,7 +2,7 @@ import React from "react";
 
 const Credentials: React.FC = () => {
   return (
-    <section className="w-full px-6 py-20 bg-white text-gray-800 font-poppins">
+    <section className="w-full px-6 py-20 bg-white text-gray-800 font-poppins shadow-2xl">
       {/* Heading */}
       <h2 className="text-4xl font-semibold text-center mb-12">
         Excellence in{" "}

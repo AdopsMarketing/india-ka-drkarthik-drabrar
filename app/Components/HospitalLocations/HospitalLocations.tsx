@@ -18,7 +18,7 @@ const HospitalCard: React.FC<HospitalCardProps> = ({
       <img
         src={logo}
         alt={logoAlt}
-        className="aspect-square object-contain w-30 max-w-full"
+        className="aspect-square object-contain w-20 md:w-30 max-w-full"
       />
       <h3 className="text-2xl font-semibold text-center mt-7 w-full">{name}</h3>
       <p className="text-base font-medium mt-3.5">{type}</p>
@@ -49,7 +49,7 @@ const HospitalLocations: React.FC = () => {
   ];
 
   return (
-    <section className="container mx-auto bg-white mt-5 md:mt-20 px-20 py-16 max-md:px-5 ">
+    <section className="container mx-auto bg-white mt-5 md:mt-20 px-20 pb-16 max-md:px-5 ">
       <div className="flex gap-5 max-md:flex-col max-md:items-stretch">
         {hospitals.map((hospital, index) => (
           <div

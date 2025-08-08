@@ -28,12 +28,15 @@ const cormorantGaramond = Cormorant_Garamond({
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
