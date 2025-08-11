@@ -1,8 +1,14 @@
-"use client";
-import { log } from "node:console";
-import React, { useState } from "react";
+'use client';
+import { FileText } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useUTM } from "../UTMs/UTMs";
+import Link from "next/link";
 
 const AppointmentForm = () => {
+  const pathname = usePathname();
+  const utm = useUTM();
+
   const [formData, setFormData] = useState({
     fullName: "",
     age: "",
@@ -11,49 +17,86 @@ const AppointmentForm = () => {
     preferredTime: "Morning (9:30 AM - 12:00 PM)",
     phone: "",
     email: "",
-    reports: null as File | null,
+    location: "",
+    file: null as File | null,
+    utm_campaign: "",
+    utm_source: "",
+    utm_medium: "",
+    utm_term: "",
+    utm_content: "",
   });
+
+  const [filePreview, setFilePreview] = useState({ fileName: "", fileType: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Update formData with path and UTM params
+  useEffect(() => {
+    const parts = pathname.split("/");
+    const locationSlug = parts[parts.length - 1];
+
+    setFormData(prev => ({
+      ...prev,
+      location: locationSlug,
+      utm_campaign: utm.utm_campaign,
+      utm_source: utm.utm_source,
+      utm_medium: utm.utm_medium,
+      utm_term: utm.utm_term,
+      utm_content: utm.utm_content,
+    }));
+  }, [pathname, utm]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleConcernChange = (concern: string) => {
-    setFormData((prev) => ({ ...prev, primaryConcern: concern }));
+    setFormData(prev => ({ ...prev, primaryConcern: concern }));
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    setFormData((prev) => ({ ...prev, reports: file }));
+    setFormData(prev => ({ ...prev, file }));
+
+    if (file) {
+      if (file.type === "application/pdf") {
+        setFilePreview({ fileName: file.name, fileType: "pdf" });
+      } else if (file.type.startsWith("image/")) {
+        setFilePreview({ fileName: file.name, fileType: "image" });
+      }
+    } else {
+      setFilePreview({ fileName: "", fileType: "" });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Prepare data as JSON
-    const data = {
-      fullName: formData.fullName,
-      age: formData.age,
-      primaryConcern: formData.primaryConcern,
-      preferredDate: formData.preferredDate,
-      preferredTime: formData.preferredTime,
-      phone: formData.phone,
-      email: formData.email,
-      reports: formData.reports,
-    };
-
-    console.log("Submitting appointment form:", data);
+    const form = new FormData();
+    form.append("fullName", formData.fullName);
+    form.append("age", formData.age);
+    form.append("primaryConcern", formData.primaryConcern);
+    form.append("preferredDate", formData.preferredDate);
+    form.append("preferredTime", formData.preferredTime);
+    form.append("phone", formData.phone);
+    form.append("email", formData.email);
+    form.append("location", formData.location);
+    form.append("utm_campaign", utm.utm_campaign);
+    form.append("utm_source", utm.utm_source);
+    form.append("utm_medium", utm.utm_medium);
+    form.append("utm_term", utm.utm_term);
+    form.append("utm_content", utm.utm_content);
+    if (formData.file) {
+      form.append("file", formData.file);
+    }
 
     try {
       const res = await fetch("/api/formsubmission", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data), // send the JSON string
+        body: form,
       });
 
       const result = await res.json();
@@ -62,15 +105,39 @@ const AppointmentForm = () => {
       } else {
         alert("Error: " + result.error);
       }
+
+      setIsSubmitting(false);
+      setFormData({
+        fullName: "",
+        age: "",
+        primaryConcern: "",
+        preferredDate: "",
+        preferredTime: "Morning (9:30 AM - 12:00 PM)",
+        phone: "",
+        email: "",
+        location: "",
+        file: null,
+        utm_campaign: "",
+        utm_source: "",
+        utm_medium: "",
+        utm_term: "",
+        utm_content: "",
+      });
     } catch (err) {
       alert("Submission failed.");
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="container mx-auto w-full py-24 px-4 md:px-6">
+    <section
+      className={`container mx-auto w-full ${pathname === "/book-consultation"
+          ? "py-0 px-0"
+          : "py-24 px-4 md:px-6"
+        }`}
+    >
       <div
-        className="max-w-5xl mx-auto  bg-white px-6 py-10 rounded-2xl"
+        className="max-w-5xl mx-auto bg-white px-6 py-10 rounded-2xl"
         style={{
           background: "#FFFFFF",
           boxShadow:
@@ -81,13 +148,12 @@ const AppointmentForm = () => {
           Quick-Fill Appointment Form
         </h2>
 
-        <form onSubmit={handleSubmit}>
+        {/* FORM */}
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          {/* Full Name & Age */}
           <div className="flex flex-col md:flex-row gap-10 mb-12">
             <div className="flex-1">
-              <label
-                htmlFor="fullName"
-                className="text-[#4A4A4A] text-lg font-bold block mb-2"
-              >
+              <label htmlFor="fullName" className="text-[#4A4A4A] text-lg font-bold block mb-2">
                 Full Name *
               </label>
               <input
@@ -102,10 +168,7 @@ const AppointmentForm = () => {
               />
             </div>
             <div className="flex-1">
-              <label
-                htmlFor="age"
-                className="text-[#4A4A4A] text-lg font-bold block mb-2"
-              >
+              <label htmlFor="age" className="text-[#4A4A4A] text-lg font-bold block mb-2">
                 Age *
               </label>
               <input
@@ -121,6 +184,7 @@ const AppointmentForm = () => {
             </div>
           </div>
 
+          {/* Primary Concern */}
           <div className="mb-12">
             <fieldset>
               <legend className="text-[#4A4A4A] text-lg font-bold mb-4">
@@ -148,12 +212,10 @@ const AppointmentForm = () => {
             </fieldset>
           </div>
 
+          {/* Date & Time */}
           <div className="flex flex-col md:flex-row gap-10 mb-12">
             <div className="flex-1">
-              <label
-                htmlFor="preferredDate"
-                className="text-[#4A4A4A] text-lg font-bold block mb-2"
-              >
+              <label htmlFor="preferredDate" className="text-[#4A4A4A] text-lg font-bold block mb-2">
                 Preferred Date *
               </label>
               <input
@@ -167,11 +229,8 @@ const AppointmentForm = () => {
               />
             </div>
             <div className="flex-1">
-              <label
-                htmlFor="preferredTime"
-                className="text-[#4A4A4A] text-lg font-bold block mb-2"
-              >
-                Preferred Time*
+              <label htmlFor="preferredTime" className="text-[#4A4A4A] text-lg font-bold block mb-2">
+                Preferred Time *
               </label>
               <select
                 id="preferredTime"
@@ -181,25 +240,17 @@ const AppointmentForm = () => {
                 className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg focus:outline-none focus:ring-2 focus:ring-[#1A4CA3] appearance-none"
                 required
               >
-                <option value="Morning (9:30 AM - 12:00 PM)">
-                  Morning (9:30 AM - 12:00 PM)
-                </option>
-                <option value="Afternoon (12:00 PM - 5:00 PM)">
-                  Afternoon (12:00 PM - 5:00 PM)
-                </option>
-                <option value="Evening (5:00 PM - 9:00 PM)">
-                  Evening (5:00 PM - 9:00 PM)
-                </option>
+                <option value="Morning (9:30 AM - 12:00 PM)">Morning (9:30 AM - 12:00 PM)</option>
+                <option value="Afternoon (12:00 PM - 5:00 PM)">Afternoon (12:00 PM - 5:00 PM)</option>
+                <option value="Evening (5:00 PM - 9:00 PM)">Evening (5:00 PM - 9:00 PM)</option>
               </select>
             </div>
           </div>
 
+          {/* Phone & Email */}
           <div className="flex flex-col md:flex-row gap-10 mb-12">
             <div className="flex-1">
-              <label
-                htmlFor="phone"
-                className="text-[#4A4A4A] text-lg font-bold block mb-2"
-              >
+              <label htmlFor="phone" className="text-[#4A4A4A] text-lg font-bold block mb-2">
                 Phone (WhatsApp) *
               </label>
               <input
@@ -211,13 +262,12 @@ const AppointmentForm = () => {
                 placeholder="+91 9xxxx xxxxx"
                 className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg placeholder:text-black focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
                 required
+                maxLength={13}
+                pattern="[0-9]{13}"
               />
             </div>
             <div className="flex-1">
-              <label
-                htmlFor="email"
-                className="text-[#4A4A4A] text-lg font-bold block mb-2"
-              >
+              <label htmlFor="email" className="text-[#4A4A4A] text-lg font-bold block mb-2">
                 Email (Optional)
               </label>
               <input
@@ -232,11 +282,9 @@ const AppointmentForm = () => {
             </div>
           </div>
 
-          <div className="mb-12">
-            <label
-              htmlFor="reports"
-              className="text-[#4A4A4A] text-lg font-bold block mb-2"
-            >
+          {/* File Upload */}
+          <div className="mb-5">
+            <label htmlFor="reports" className="text-[#4A4A4A] text-lg font-bold block mb-2">
               Upload Reports (PDF/X-ray photo, max 10 MB)
             </label>
             <div className="text-center h-60 flex flex-col items-center justify-center gap-6 p-8 rounded border-2 border-dashed border-[#4A4A4A] relative">
@@ -254,16 +302,47 @@ const AppointmentForm = () => {
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>
+            {filePreview.fileName && filePreview.fileType && (
+              <div className="mt-4 flex gap-3 items-center">
+                {filePreview.fileType === "pdf" && <FileText />}
+                {filePreview.fileType === "image" && formData.file && (
+                  <img
+                    src={URL.createObjectURL(formData.file)}
+                    alt="Uploaded file preview"
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                )}
+                <p>{filePreview.fileName}</p>
+              </div>
+            )}
           </div>
 
+          {/* Hidden UTM inputs */}
+          <input type="hidden" name="utm_campaign" value={formData.utm_campaign} />
+          <input type="hidden" name="utm_source" value={formData.utm_source} />
+          <input type="hidden" name="utm_medium" value={formData.utm_medium} />
+          <input type="hidden" name="utm_term" value={formData.utm_term} />
+          <input type="hidden" name="utm_content" value={formData.utm_content} />
+
+          {/* Submit button */}
           <button
             type="submit"
-            className="w-full text-center cursor-pointer bg-[#1A4CA3] mt-10 py-5 rounded-lg hover:bg-[#1A4CA3]/90 transition-colors"
+            className="w-full text-center cursor-pointer bg-[#1A4CA3] py-5 rounded-lg hover:bg-[#1A4CA3]/90 transition-colors font-montserrat font-medium"
+            disabled={isSubmitting}
           >
-            <span className="text-white text-xl font-bold">
-              Book Appointment
+            <span className="text-white text-xl">
+              {isSubmitting ? "Booking..." : "Book Appointment"}
             </span>
           </button>
+
+          {/* WhatsApp button */}
+          {pathname === "/book-consultation" && (
+            <Link href="#" className="mt-6 block text-center">
+              <button className="bg-green-500 hover:bg-green-600 text-white text-xl px-6 py-5 rounded-lg transition-colors w-full font-montserrat font-medium">
+                WhatsApp Chat
+              </button>
+            </Link>
+          )}
         </form>
       </div>
     </section>

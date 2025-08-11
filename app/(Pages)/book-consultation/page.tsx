@@ -2,8 +2,8 @@
 import React from 'react';
 import HeroSection from './HeroSection';
 import LocationCard from './LocationCard';
-import BookingForm from './BookingForm';
 import CallToAction from './CallToAction';
+import AppointmentForm from '@/app/Components/AppointmentForm/AppointmentForm';
 
 const Page = () => {
   return (
@@ -12,9 +12,9 @@ const Page = () => {
         <HeroSection />
 
         <section className="container mx-auto mt-20 max-md:mt-10 px-6">
-          <div className="flex gap-6 max-md:flex-col">
+          <div className="flex gap-6 max-lg:flex-col">
             {/* Left Column - Location Cards */}
-            <div className="w-3/5 max-md:w-full">
+            <div className="w-1/2 max-lg:w-full">
               <div className="space-y-9">
                 <LocationCard
                   hospitalName="SAI Hospital – Channapatna"
@@ -35,8 +35,8 @@ const Page = () => {
             </div>
 
             {/* Right Column - Booking Form */}
-            <div className="w-2/5 max-md:w-full">
-              <BookingForm />
+            <div className="w-1/2 max-lg:w-full">
+              <AppointmentForm />
             </div>
           </div>
         </section>

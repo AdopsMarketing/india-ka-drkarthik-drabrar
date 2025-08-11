@@ -1,4 +1,5 @@
 import React from 'react';
+import { WhatsappIcon } from '../../Components/svgIcons/svgIcons';
 
 interface LocationCardProps {
   hospitalName: string;
@@ -75,11 +76,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
 
       <div className="flex flex-wrap gap-4 mt-8 text-lg font-semibold">
         <button className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2 px-6 py-2 rounded-lg transition-colors">
-          <img
-            src="https://api.builder.io/api/v1/image/assets/defa096633aa4aef9cdf086d12d7de68/352bb1ddc59cd4b4f8162cf8f0bffca99b419dde?placeholderIfAbsent=true"
-            alt="WhatsApp icon"
-            className="w-6 h-6"
-          />
+          <WhatsappIcon />
           <span>What's App</span>
         </button>
         <button className="border-2 border-black text-black flex items-center gap-2 px-6 py-2 rounded-lg hover:bg-gray-100 transition-colors">

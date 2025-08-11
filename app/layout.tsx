@@ -4,21 +4,14 @@ import {
   Geist_Mono,
   Cormorant_Garamond,
   Montserrat,
-  Poppins
+  Poppins,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/Components/Navbar/Navbar";
 import Footer from "@/app/Components/Footer/Footer";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { GoogleTagManager } from "@next/third-parties/google";
+import { UTMProvider } from "./Components/UTMs/UTMs";
+import { Suspense } from "react";
 
 const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-cormorant_garamond",
@@ -51,12 +44,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <GoogleTagManager gtmId="GTM-NZPN2FQX" />
+
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${cormorantGaramond.variable} ${montserrat.variable} ${poppins.variable} antialiased`}
+        className={`${cormorantGaramond.variable} ${montserrat.variable} ${poppins.variable} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <Suspense fallback={null}>
+          <UTMProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </UTMProvider>
+        </Suspense>
       </body>
     </html>
   );

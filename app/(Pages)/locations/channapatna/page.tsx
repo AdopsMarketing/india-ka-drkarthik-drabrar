@@ -1,34 +1,31 @@
-"use client";
-
-import React from "react";
-import { usePathname } from "next/navigation";
+import React, { Suspense } from "react";
 import HeroSection from "./HeroSection";
 import BenefitsSection from "./BenefitsSection";
 import HospitalInfo from "./HospitalInfo";
-import AppointmentForm from "../../../Components/AppointmentForm/AppointmentForm";
+import AppointmentForm from "@/app/Components/AppointmentForm/AppointmentForm";
 import ProcessFlow from "./ProcessFlow";
 import TestimonialSection from "./TestimonialSection";
 import InfoSection from "./InfoSection";
 import HelpSupport from "./HelpSupport";
 
-const Page = () => {
-
+export default function Page() {
   return (
-    <>
-      <div className="w-full relative">
-        <main>
-          <HeroSection />
-          <BenefitsSection />
-          <HospitalInfo />
-          <AppointmentForm />
-          <ProcessFlow />
-          <TestimonialSection />
-          <InfoSection />
-          <HelpSupport />
-        </main>
-      </div>
-    </>
-  );
-};
+    <div className="w-full relative">
+      <main>
+        <HeroSection />
+        <BenefitsSection />
+        <HospitalInfo />
 
-export default Page;
+        {/* Suspense here is required for usePathname/useSearchParams inside AppointmentForm */}
+        <Suspense fallback={<div>Loading form...</div>}>
+          <AppointmentForm />
+        </Suspense>
+
+        <ProcessFlow />
+        <TestimonialSection />
+        <InfoSection />
+        <HelpSupport />
+      </main>
+    </div>
+  );
+}

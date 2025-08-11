@@ -1,12 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import HomePage from "@/app/(Pages)/Home/page";
 
 const Home: React.FC = () => {
-  return (
-    <>
-      <HomePage />;
-    </>
-  );
+  return <HomePage />;
 };
 
 export default Home;
