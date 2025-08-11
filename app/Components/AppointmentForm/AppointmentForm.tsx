@@ -237,7 +237,7 @@ const AppointmentForm = () => {
                 name="preferredTime"
                 value={formData.preferredTime}
                 onChange={handleInputChange}
-                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg focus:outline-none focus:ring-2 focus:ring-[#1A4CA3] appearance-none"
+                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
                 required
               >
                 <option value="Morning (9:30 AM - 12:00 PM)">Morning (9:30 AM - 12:00 PM)</option>

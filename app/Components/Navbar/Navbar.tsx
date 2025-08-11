@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // For route changes (if using Next 13+)
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const Navbar: React.FC = () => {
@@ -9,7 +9,16 @@ const Navbar: React.FC = () => {
   const [isLocationsOpenDesktop, setIsLocationsOpenDesktop] = useState(false);
   const [isLocationsOpenMobile, setIsLocationsOpenMobile] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname(); // Optional: for Next.js route changes
+  const pathname = usePathname();
+
+  // Refs for smooth dropdowns
+  const desktopRef = useRef<HTMLDivElement>(null);
+  const desktopContentRef = useRef<HTMLDivElement>(null);
+  const [desktopHeight, setDesktopHeight] = useState(0);
+
+  const mobileRef = useRef<HTMLDivElement>(null);
+  const mobileContentRef = useRef<HTMLDivElement>(null);
+  const [mobileHeight, setMobileHeight] = useState(0);
 
   const navItems = [
     { label: "Joint- Replacement", href: "/joint-replacement" },
@@ -24,33 +33,46 @@ const Navbar: React.FC = () => {
     { label: "Apollo", href: "/locations/apollo" },
   ];
 
-  // Click outside mobile menu (when open)
+  // Close mobile menu when clicking outside
   useEffect(() => {
     if (!isOpen) return;
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
         setIsLocationsOpenMobile(false);
       }
-    }
+    };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  // Close menus when route changes (optional, for Next.js navigation)
+  // Close menus on route change
   useEffect(() => {
     setIsOpen(false);
     setIsLocationsOpenDesktop(false);
     setIsLocationsOpenMobile(false);
   }, [pathname]);
 
+  // Measure heights dynamically
+  useEffect(() => {
+    if (desktopContentRef.current) {
+      setDesktopHeight(desktopContentRef.current.scrollHeight);
+    }
+  }, [isLocationsOpenDesktop]);
+
+  useEffect(() => {
+    if (mobileContentRef.current) {
+      setMobileHeight(mobileContentRef.current.scrollHeight);
+    }
+  }, [isLocationsOpenMobile]);
+
   return (
     <header className="bg-white w-full z-100 font-montserrat shadow-md">
-      <div className="flex items-center justify-between px-6 py-4 mx-auto ">
+      <div className="flex items-center justify-between px-6 py-4 mx-auto">
         {/* Logo */}
         <Link href="/" passHref>
           <img
-            src="https://api.builder.io/api/v1/image/assets/TEMP/3918405b6a78d82918b0c234d51615bcae88a442?placeholderIfAbsent=true"
+            src="https://api.builder.io/api/v1/image/assets/TEMP/3918405b6a78d82918b0c234d51615bcae88a442"
             alt="Dr. Karthik M S Logo"
             className="w-20 h-auto cursor-pointer"
           />
@@ -68,17 +90,25 @@ const Navbar: React.FC = () => {
             </Link>
           ))}
 
-          {/* Locations with dropdown */}
-          {/* Desktop Locations Dropdown */}
+          {/* Desktop Locations Dropdown with smooth animation */}
           <div
             className="relative px-2 py-1 hover:text-blue-600 cursor-pointer"
             onMouseEnter={() => setIsLocationsOpenDesktop(true)}
             onMouseLeave={() => setIsLocationsOpenDesktop(false)}
-            style={{ zIndex: 9999 }} // or add 'z-50' to your className in tailwind
           >
             Locations
-            {isLocationsOpenDesktop && (
-              <div className="absolute top-full left-0 z-50 bg-white shadow-md rounded-md text-black w-48">
+            <div
+              ref={desktopRef}
+              style={{
+                height: isLocationsOpenDesktop ? `${desktopHeight}px` : "0px",
+                overflow: "hidden",
+                transition:
+                  "height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease",
+                opacity: isLocationsOpenDesktop ? 1 : 0,
+              }}
+              className="absolute top-full left-0 bg-white shadow-md rounded-md text-black w-48"
+            >
+              <div ref={desktopContentRef} className="py-2">
                 {locationsDropdown.map(({ label, href }) => (
                   <Link
                     key={href}
@@ -89,7 +119,7 @@ const Navbar: React.FC = () => {
                   </Link>
                 ))}
               </div>
-            )}
+            </div>
           </div>
 
           <Link
@@ -100,11 +130,10 @@ const Navbar: React.FC = () => {
           </Link>
         </nav>
 
-        {/* Hamburger Icon for Mobile */}
+        {/* Hamburger (Mobile) */}
         <button
           onClick={() => setIsOpen((prev) => !prev)}
           className="md:hidden text-black"
-          aria-label="Toggle menu"
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -114,47 +143,60 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <nav
           ref={menuRef}
-          className="md:hidden bg-white px-6 py-4 space-y-4 text-lg font-semibold text-black menu-container"
+          className="md:hidden bg-white px-6 py-4 space-y-4 text-lg font-semibold text-black"
         >
           {navItems.map(({ label, href }) => (
             <Link
               key={href}
               href={href}
               className="block"
-              onClick={() => setIsOpen(false)} // Close menu on click
+              onClick={() => setIsOpen(false)}
             >
               {label}
             </Link>
           ))}
 
-          {/* Locations in mobile menu */}
-          <div className="relative">
+          {/* Mobile Locations - Smooth Inline Expansion */}
+          <div>
             <button
               onClick={() => setIsLocationsOpenMobile((prev) => !prev)}
-              className="w-full text-left px-4 py-2"
+              className="w-full text-left"
             >
               Locations
             </button>
-            {isLocationsOpenMobile && (
-              <div className="absolute top-full left-0 bg-white shadow-md mt-2 rounded-md text-black w-full">
+            <div
+              className="relative p-3 rounded-2xl"
+              ref={mobileRef}
+              style={{
+                height: isLocationsOpenMobile ? `${mobileHeight + 20}px` : "0px",
+                overflow: "hidden",
+                transition:
+                  "height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease",
+                opacity: isLocationsOpenMobile ? 1 : 0,
+                boxShadow: isLocationsOpenMobile
+                  ? "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px"
+                  : "none",
+              }}
+            >
+              <div ref={mobileContentRef} className=" space-y-2">
                 {locationsDropdown.map(({ label, href }) => (
                   <Link
                     key={href}
                     href={href}
-                    className="block px-4 py-2 hover:bg-gray-100"
-                    onClick={() => setIsOpen(false)} // Close the main menu
+                    className="block text-base font-semibold hover:text-blue-600"
+                    onClick={() => setIsOpen(false)}
                   >
                     {label}
                   </Link>
                 ))}
               </div>
-            )}
+            </div>
           </div>
 
           <Link
             href="/book-consultation"
             className="block bg-blue-700 text-white px-5 py-2 rounded-[10px] text-center hover:bg-blue-800"
-            onClick={() => setIsOpen(false)} // Close menu on click
+            onClick={() => setIsOpen(false)}
           >
             Book Consultation
           </Link>

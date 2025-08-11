@@ -21,3 +21,7 @@ label {
   font-weight: 700;
   line-height: normal;
 }
+
+button {
+  cursor: pointer;
+}
