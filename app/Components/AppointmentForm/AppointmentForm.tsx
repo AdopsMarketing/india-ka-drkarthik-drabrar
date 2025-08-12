@@ -32,7 +32,11 @@ const AppointmentForm = () => {
   // Update formData with path and UTM params
   useEffect(() => {
     const parts = pathname.split("/");
-    const locationSlug = parts[parts.length - 1];
+    let locationSlug = parts[parts.length - 1];
+
+    if (locationSlug === "book-consultation") {
+      locationSlug = formData.location;
+    }
 
     setFormData(prev => ({
       ...prev,
@@ -44,6 +48,9 @@ const AppointmentForm = () => {
       utm_content: utm.utm_content,
     }));
   }, [pathname, utm]);
+
+
+  console.log(formData);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -184,6 +191,28 @@ const AppointmentForm = () => {
             </div>
           </div>
 
+          {/* Location */}
+          {pathname === "/book-consultation" && (
+            <div className="mb-12">
+              <label htmlFor="location" className="text-[#4A4A4A] text-lg font-bold block mb-2">
+                Location *
+              </label>
+              <select
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg placeholder:text-[#BFBFBF] focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
+                required
+              >
+                <option value="">Select your location</option>
+                <option value="Apollo">Apollo</option>
+                <option value="Channapatna">Channapatna</option>
+                <option value="Vydehi">Vydehi</option>
+              </select>
+            </div>
+          )}
+
           {/* Primary Concern */}
           <div className="mb-12">
             <fieldset>
@@ -224,7 +253,7 @@ const AppointmentForm = () => {
                 name="preferredDate"
                 value={formData.preferredDate}
                 onChange={handleInputChange}
-                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
+                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg placeholder:text-[#BFBFBF] focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
                 required
               />
             </div>
@@ -237,7 +266,7 @@ const AppointmentForm = () => {
                 name="preferredTime"
                 value={formData.preferredTime}
                 onChange={handleInputChange}
-                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
+                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg placeholder:text-[#BFBFBF] focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
                 required
               >
                 <option value="Morning (9:30 AM - 12:00 PM)">Morning (9:30 AM - 12:00 PM)</option>
@@ -259,11 +288,11 @@ const AppointmentForm = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                placeholder="+91 9xxxx xxxxx"
-                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg placeholder:text-black focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
+                placeholder="Your phone number"
+                className="border h-12 w-full bg-white placeholder:text-[#BFBFBF] px-4 rounded-xl border-black text-lg focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
                 required
-                maxLength={13}
-                pattern="[0-9]{13}"
+                maxLength={10}
+                pattern="[0-9]{10}"
               />
             </div>
             <div className="flex-1">
@@ -277,7 +306,7 @@ const AppointmentForm = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="Your email address"
-                className="border h-12 w-full bg-white px-4 rounded-xl border-black text-lg placeholder:text-black focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
+                className="border h-12 w-full bg-white placeholder:text-[#BFBFBF] px-4 rounded-xl border-black text-lg focus:outline-none focus:ring-2 focus:ring-[#1A4CA3]"
               />
             </div>
           </div>

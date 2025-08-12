@@ -47,9 +47,7 @@ export async function POST(request: Request) {
     const fileEntry = formData.get("file");
     if (fileEntry && fileEntry instanceof File) {
       fileUrl = await uploadFileToDrive(fileEntry);
-    } else {
-      throw new Error("No file uploaded or file is invalid");
-    }
+    } 
 
     await appendToGoogleSheet([
       fullName,

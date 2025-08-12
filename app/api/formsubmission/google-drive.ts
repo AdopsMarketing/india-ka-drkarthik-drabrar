@@ -7,28 +7,12 @@ export async function uploadFileToDrive(file: File): Promise<string> {
   const debug: string[] = []; // Collect logs for debugging
 
   try {
-    debug.push("Step 1: API route hit");
-
-    // Parse the form-data
-    debug.push("Step 2: request.formData() succeeded");
-
-    // Get file
-    if (!file) {
-      throw new Error("No file provided");
-    }
-
-    debug.push(
-      `Step 3: Found file '${file.name}', size=${file.size}, type=${file.type}`
-    );
-
     // Convert to Buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    debug.push("Step 4: File converted to Buffer. Length: " + buffer.length);
 
     // Convert Buffer to Readable stream (fixes .pipe issue)
     const readableStream = Readable.from(buffer);
-    debug.push("Step 5: Readable stream created");
 
     // Google Drive JWT Auth
     const auth = new google.auth.JWT({
@@ -37,7 +21,6 @@ export async function uploadFileToDrive(file: File): Promise<string> {
       scopes: ["https://www.googleapis.com/auth/drive"],
     });
     const drive = google.drive({ version: "v3", auth });
-    debug.push("Step 6: Google Drive Auth client created");
 
     // Ensure GOOGLE_DRIVE_FOLDER_ID is defined
     const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
@@ -59,14 +42,12 @@ export async function uploadFileToDrive(file: File): Promise<string> {
       fields: "id, webViewLink",
     });
 
-    debug.push("Step 7: File uploaded to Google Drive");
 
     // Return the file URL from Google Drive's response
     const fileUrl = driveRes.data.webViewLink;
 
     return fileUrl || "";
   } catch (err) {
-    debug.push("CATCH: " + (err instanceof Error ? err.message : String(err)));
     console.error("Upload error:", err);
     throw err instanceof Error ? err : new Error("Upload failed");
   }
