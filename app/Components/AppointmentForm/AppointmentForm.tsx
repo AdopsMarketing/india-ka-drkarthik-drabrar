@@ -1,11 +1,13 @@
 'use client';
 import { FileText } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { redirect, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useUTM } from "../UTMs/UTMs";
 import Link from "next/link";
+import axios from "axios";
 
 const AppointmentForm = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const utm = useUTM();
 
@@ -101,19 +103,14 @@ const AppointmentForm = () => {
     }
 
     try {
-      const res = await fetch("/api/formsubmission", {
-        method: "POST",
-        body: form,
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        redirect("/thank-you");
+      const response = await axios.post("/api/formsubmission", form);
+      if (response.status === 201) {
+        setIsSubmitting(false);
+        router.push('/thank-you');
       } else {
-        alert("Error: " + result.error);
+        alert("Error: " + response.data.error);
       }
 
-      setIsSubmitting(false);
       setFormData({
         fullName: "",
         age: "",
@@ -138,7 +135,7 @@ const AppointmentForm = () => {
 
   return (
     <section
-      className={`container mx-auto w-full  ${pathname === "/locations" 
+      className={`container mx-auto w-full  ${pathname === "/locations"
         ? "py-0 px-0"
         : "py-24 px-4 md:px-6"
         }`}
@@ -192,7 +189,7 @@ const AppointmentForm = () => {
           </div>
 
           {/* Location */}
-          { (pathname === "/locations" || pathname === "/book-consultation") && (
+          {(pathname === "/locations" || pathname === "/book-consultation") && (
             <div className="mb-12">
               <label htmlFor="location" className="text-[#4A4A4A] text-lg font-bold block mb-2">
                 Location *

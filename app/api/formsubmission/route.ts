@@ -31,11 +31,19 @@ export async function POST(request: Request) {
       !primaryConcern ||
       !preferredDate ||
       !preferredTime ||
-      !email ||
       !location
     ) {
+      
+      const missingFields = [];
+      if (!fullName) missingFields.push("fullName");
+      if (!age) missingFields.push("age");
+      if (!primaryConcern) missingFields.push("primaryConcern");
+      if (!preferredDate) missingFields.push("preferredDate");
+      if (!preferredTime) missingFields.push("preferredTime");
+      if (!location) missingFields.push("location");
+
       return new Response(
-        JSON.stringify({ error: "All fields are required" }),
+        JSON.stringify({ error: `Missing required fields: ${missingFields.join(", ")}` }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }

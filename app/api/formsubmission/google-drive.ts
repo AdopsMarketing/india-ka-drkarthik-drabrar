@@ -4,7 +4,6 @@ import { Readable } from "stream";
 
 // POST handler for /api/upload
 export async function uploadFileToDrive(file: File): Promise<string> {
-  const debug: string[] = []; // Collect logs for debugging
 
   try {
     // Convert to Buffer
