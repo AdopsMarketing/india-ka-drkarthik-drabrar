@@ -138,7 +138,7 @@ const AppointmentForm = () => {
 
   return (
     <section
-      className={`container mx-auto w-full  ${pathname === "/book-consultation"
+      className={`container mx-auto w-full  ${pathname === "/locations" 
         ? "py-0 px-0"
         : "py-24 px-4 md:px-6"
         }`}
@@ -192,7 +192,7 @@ const AppointmentForm = () => {
           </div>
 
           {/* Location */}
-          {pathname === "/book-consultation" && (
+          { (pathname === "/locations" || pathname === "/book-consultation") && (
             <div className="mb-12">
               <label htmlFor="location" className="text-[#4A4A4A] text-lg font-bold block mb-2">
                 Location *
@@ -365,7 +365,7 @@ const AppointmentForm = () => {
           </button>
 
           {/* WhatsApp button */}
-          {pathname === "/book-consultation" && (
+          {pathname === "/locations" && (
             <Link href={`https://wa.me/8618352089`} className="mt-6 block text-center">
               <button className="bg-green-500 hover:bg-green-600 text-white text-xl px-6 py-5 rounded-lg transition-colors w-full font-montserrat font-medium">
                 WhatsApp Chat

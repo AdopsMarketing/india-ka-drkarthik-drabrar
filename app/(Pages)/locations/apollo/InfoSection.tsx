@@ -40,13 +40,14 @@ const InfoSection = () => {
             key={index}
             className="flex mb-7 max-md:flex-col max-md:gap-2"
           >
-            <div className="text-[#1C274C] text-lg sm:text-2xl font-bold flex-1">
+            <div className="text-[#1C274C] text-lg sm:text-2xl font-medium flex-1">
+      
               {service.service}
             </div>
-            <div className="text-[#1C274C] text-lg sm:text-2xl font-bold flex-1">
+            <div className="text-[#1C274C] text-lg sm:text-2xl font-medium flex-1">
               {service.fee}
             </div>
-            <div className="text-[#1C274C] text-lg sm:text-2xl font-bold flex-1">
+            <div className="text-[#1C274C] text-lg sm:text-2xl font-medium flex-1">
               {service.notes}
             </div>
           </div>

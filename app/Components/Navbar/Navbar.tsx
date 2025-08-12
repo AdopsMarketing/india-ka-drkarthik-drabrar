@@ -96,7 +96,9 @@ const Navbar: React.FC = () => {
             onMouseEnter={() => setIsLocationsOpenDesktop(true)}
             onMouseLeave={() => setIsLocationsOpenDesktop(false)}
           >
-            Locations
+            <Link href='/locations'>
+              Locations
+            </Link>
             <div
               ref={desktopRef}
               style={{
