@@ -13,7 +13,7 @@ const HeroSection = () => {
         Night Slots | Flexible Timing | Kannada & English
       </p>
 
-      <button className="text-center cursor-pointer bg-[#1A4CA3]  py-3 px-5  rounded-lg hover:bg-[#1A4CA3]/90 transition-colors text-white text-xl font-semibold">
+      <button className="text-center pointer-events-none bg-[#1A4CA3]  py-3 px-5  rounded-lg hover:bg-[#1A4CA3]/90 transition-colors text-white text-xl font-semibold">
         Book Consultation via Apollo App
       </button>
     </section>

@@ -6,7 +6,7 @@ import AppointmentForm from "@/app/Components/AppointmentForm/AppointmentForm";
 import ProcessFlow from "./ProcessFlow";
 import TestimonialSection from "./TestimonialSection";
 import InfoSection from "./InfoSection";
-import HelpSupport from "./HelpSupport";
+import HelpSupport from "@/app/Components/HelpSupport/HelpSupport";
 
 const Page = () => {
   return (

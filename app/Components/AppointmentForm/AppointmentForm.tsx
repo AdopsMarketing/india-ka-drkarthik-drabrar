@@ -1,7 +1,7 @@
 'use client';
 import { FileText } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useUTM } from "../UTMs/UTMs";
 import Link from "next/link";
 
@@ -101,7 +101,7 @@ const AppointmentForm = () => {
 
       const result = await res.json();
       if (res.ok) {
-        alert("Appointment booked!");
+        redirect("/thank-you");
       } else {
         alert("Error: " + result.error);
       }
@@ -131,9 +131,9 @@ const AppointmentForm = () => {
 
   return (
     <section
-      className={`container mx-auto w-full ${pathname === "/book-consultation"
-          ? "py-0 px-0"
-          : "py-24 px-4 md:px-6"
+      className={`container mx-auto w-full  ${pathname === "/book-consultation"
+        ? "py-0 px-0"
+        : "py-24 px-4 md:px-6"
         }`}
     >
       <div
@@ -337,7 +337,7 @@ const AppointmentForm = () => {
 
           {/* WhatsApp button */}
           {pathname === "/book-consultation" && (
-            <Link href="#" className="mt-6 block text-center">
+            <Link href={`https://wa.me/8618352089`} className="mt-6 block text-center">
               <button className="bg-green-500 hover:bg-green-600 text-white text-xl px-6 py-5 rounded-lg transition-colors w-full font-montserrat font-medium">
                 WhatsApp Chat
               </button>

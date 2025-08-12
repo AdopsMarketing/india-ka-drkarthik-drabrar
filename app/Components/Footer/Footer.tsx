@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Footer: React.FC = () => {
@@ -10,30 +11,30 @@ const Footer: React.FC = () => {
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-blue-300 transition-colors">Home</a>
+                <Link href="/" className="hover:text-blue-300 transition-colors">Home</Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-300 transition-colors">Joint-Replacement Care</a>
+                <Link href="/joint-replacement" className="hover:text-blue-300 transition-colors">Joint-Replacement Care</Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-300 transition-colors">Patient Resources</a>
+                <Link href="/patient-resources" className="hover:text-blue-300 transition-colors">Patient Resources</Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-300 transition-colors">Locations & Appointments</a>
+                <Link href="/book-consultation" className="hover:text-blue-300 transition-colors">Locations & Appointments</Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-300 transition-colors">Patient Stories</a>
+                <Link href="/patient-stories" className="hover:text-blue-300 transition-colors">Patient Stories</Link>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-300 transition-colors">Blog</a>
+                <Link href="/blog" className="hover:text-blue-300 transition-colors">Blog</Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/book-consultation"
                   className="text-[#5ab8d0] hover:text-blue-300 transition-colors"
                 >
                   Book Consultation
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
@@ -43,19 +44,21 @@ const Footer: React.FC = () => {
             <h3 className="text-xl font-semibold mb-4">Contact</h3>
             <ul className="space-y-2">
               <li>
-                <a href="tel:+91-XXXXXXXXXX" className="hover:text-blue-300 transition-colors">
-                  Phone: +91-XXXXXXXXXX
-                </a>
+                Phone:
+                <Link href="tel:+91-8618352089" className="hover:text-blue-300 transition-colors">
+                  +91-8618352089
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-[#3dbe84] hover:text-green-300 transition-colors">
+                <Link href="https://wa.me/8618352089" className="text-[#3dbe84] hover:text-green-300 transition-colors">
                   WhatsApp
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="mailto:info@drkarthikms.com" className="hover:text-blue-300 transition-colors">
-                  Email: info@drkarthikms.com
-                </a>
+                Email:
+                <Link href="mailto:drkarthikms1@gmail.com" className="hover:text-blue-300 transition-colors">
+                  drkarthikms1@gmail.com
+                </Link>
               </li>
               <li className="font-semibold mt-4">Clinics:</li>
               <li>

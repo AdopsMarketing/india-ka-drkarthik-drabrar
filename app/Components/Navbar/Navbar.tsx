@@ -28,9 +28,9 @@ const Navbar: React.FC = () => {
   ];
 
   const locationsDropdown = [
+    { label: "Apollo", href: "/locations/apollo" },
     { label: "Channapatna", href: "/locations/channapatna" },
     { label: "Vydehi", href: "/locations/vydehi" },
-    { label: "Apollo", href: "/locations/apollo" },
   ];
 
   // Close mobile menu when clicking outside
@@ -105,6 +105,7 @@ const Navbar: React.FC = () => {
                 transition:
                   "height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease",
                 opacity: isLocationsOpenDesktop ? 1 : 0,
+                zIndex: 9999
               }}
               className="absolute top-full left-0 bg-white shadow-md rounded-md text-black w-48"
             >

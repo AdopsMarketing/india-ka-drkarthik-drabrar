@@ -1,18 +1,19 @@
+import  Link  from "next/link";
 import React from "react";
 
 const HospitalInfo = () => {
   return (
     <section
-      className="w-full"
+      className="w-full flex justify-center items-center"
       style={{
         background: "#FFF",
         boxShadow:
           "-281px 0 79px 0 rgba(0, 0, 0, 0.00), -180px 0 72px 0 rgba(0, 0, 0, 0.01), -101px 0 61px 0 rgba(0, 0, 0, 0.05), -45px 0 45px 0 rgba(0, 0, 0, 0.09), -11px 0 25px 0 rgba(0, 0, 0, 0.10)",
       }}
     >
-      <div className="container mx-auto flex flex-col md:flex-row gap-6 md:gap-16 bg-white px-6 py-8 sm:px-10 md:px-16 md:py-10 ">
+      <div className="container mx-auto w-full md:w-1/3 bg-white px-6 py-8 sm:px-10 md:px-16 md:py-10 ">
         <div className="flex-1">
-          <h2 className="text-black font-poppins font-bold text-2xl sm:text-3xl md:text-4xl mb-8">
+          <h2 className="text-black font-poppins font-bold text-2xl sm:text-3xl md:text-4xl mb-8 text-center">
             SAI Hospital, Channapatna
           </h2>
 
@@ -95,12 +96,14 @@ const HospitalInfo = () => {
               Contact
             </h3>
           </div>
-          <p className="text-[#4A4A4A] text-base md:text-lg font-medium font-montserrat mb-8 ml-10">
-            080-xxxx xxxx
-          </p>
+          <Link href={`tel:+918618352089`}>
+            <p className="text-[#4A4A4A] text-base md:text-lg font-medium font-montserrat mb-8 ml-10">
+              +91 8618352089
+            </p>
+          </Link>
 
           {/* Ideal For Box */}
-          <div className="bg-[#EDF4F7] mt-10 px-6 py-6 rounded-lg">
+          <div className="bg-[#EDF4F7]  mt-10 px-6 py-6 rounded-lg">
             <h4 className="text-black text-xl font-medium mb-3">Ideal For</h4>
             <p className="text-[#4A4A4A] text-base md:text-lg font-medium">
               Local & rural patients who want full diagnostic work-up the same
@@ -108,13 +111,6 @@ const HospitalInfo = () => {
             </p>
           </div>
         </div>
-
-        {/* Right Side Image */}
-        <img
-          src="https://api.builder.io/api/v1/image/assets/TEMP/164a78c4d4ff26c43da87af763bfc31ea619bc35?width=1256"
-          alt="Google map pointing to SAI Hospital, Channapatna"
-          className="w-full md:w-[628px] h-[300px] md:h-[407px] mt-10 md:mt-20 rounded-xl object-cover"
-        />
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import { EmergencyIcon, GeneralIcon } from "@/app/Components/svgIcons/svgIcons";
+import Link from "next/link";
 import React from "react";
 
 
@@ -27,9 +28,9 @@ const SupportCard: React.FC<{
       <p className="text-gray-700 text-base sm:text-lg font-montserrat font-medium">
         {description}
       </p>
-      <p className="text-gray-800 text-lg font-bold font-montserrat">
+      <Link href={title === "Emergency" ? `tel:${contact}` : `https://wa.me/${contact}`} className="text-gray-800 text-lg font-bold font-montserrat">
         {contact}
-      </p>
+      </Link>
     </article>
   );
 };
@@ -42,14 +43,14 @@ const HelpSupport = () => {
       bgColor: "#D95F62",
       title: "Emergency",
       description: "Severe injury? Call Vydehi Hospital, Whitefield",
-      contact: "080-zzzz zzzz (24×7)",
+      contact: "+91 8618352089 (24×7)",
     },
     {
       icon: <GeneralIcon />,
       bgColor: "#3DBE84",
       title: "General Queries",
       description: "WhatsApp for quick reply (9 AM–9 PM)",
-      contact: "+91 9xxxx xxxx",
+      contact: "+91 8618352089",
     },
   ];
 

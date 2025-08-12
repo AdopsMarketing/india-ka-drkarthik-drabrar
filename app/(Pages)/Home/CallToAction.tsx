@@ -20,12 +20,12 @@ const CallToAction: React.FC = () => {
           >
             Book Consultation
           </Link>
-          <Link href='tel:080-xxx-xxx'>
+          <Link href='tel:8618352089'>
             <button
               type="button"
               className="border-2 border-black text-black text-lg sm:text-xl px-6 py-3 rounded-lg bg-white hover:bg-gray-100 transition-colors"
             >
-              Call Now: 080-xxx-xxx
+              Call Now: +91 8618352089
             </button>
           </Link>
         </div>

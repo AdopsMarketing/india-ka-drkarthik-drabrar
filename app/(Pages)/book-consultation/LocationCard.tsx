@@ -1,5 +1,6 @@
 import React from 'react';
 import { WhatsappIcon } from '../../Components/svgIcons/svgIcons';
+import Link from 'next/link';
 
 interface LocationCardProps {
   hospitalName: string;
@@ -22,15 +23,15 @@ const LocationCard: React.FC<LocationCardProps> = ({
     <article className={`bg-white shadow-xl w-full flex flex-col overflow-hidden rounded-2xl px-8 pt-6 pb-8 max-md:px-5`}>
       <div className={`${isFullWidth ? 'w-full' : 'max-w-3xl'}`}>
         <div className="flex gap-5 max-md:flex-col">
-          <div className={`${isFullWidth ? 'w-1/5' : 'w-1/4'} max-md:w-full`}>
+          <div className='max-md:w-full'>
             <img
               src={hospitalImage}
               alt={hospitalName}
-              className="w-28 h-28 object-contain rounded-full mx-auto max-md:mt-4"
+              className="w-28 h-28 object-contain rounded-full m-0"
             />
           </div>
-          <div className="flex-1">
-            <h2 className="text-blue-800 text-3xl font-bold mt-4 max-md:mt-6">
+          <div className="flex-1 flex items-center">
+            <h2 className="text-blue-800 text-3xl font-bold">
               {hospitalName}
             </h2>
           </div>
@@ -75,18 +76,12 @@ const LocationCard: React.FC<LocationCardProps> = ({
       </div>
 
       <div className="flex flex-wrap gap-4 mt-8 text-lg font-semibold">
-        <button className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2 px-6 py-2 rounded-lg transition-colors">
-          <WhatsappIcon />
-          <span>What's App</span>
-        </button>
-        <button className="border-2 border-black text-black flex items-center gap-2 px-6 py-2 rounded-lg hover:bg-gray-100 transition-colors">
-          <img
-            src="https://api.builder.io/api/v1/image/assets/defa096633aa4aef9cdf086d12d7de68/eb3eceb96601f94a2aa86dcdeec5c15c02135de6?placeholderIfAbsent=true"
-            alt="Map icon"
-            className="w-6 h-6"
-          />
-          <span>View on Map</span>
-        </button>
+        <Link href={`https://wa.me/${contact}`}>
+          <button className="bg-green-500 hover:bg-green-600 text-white flex items-center gap-2 px-6 py-2 rounded-lg transition-colors">
+            <WhatsappIcon />
+            <span>What's App</span>
+          </button>
+        </Link>
       </div>
     </article>
   );

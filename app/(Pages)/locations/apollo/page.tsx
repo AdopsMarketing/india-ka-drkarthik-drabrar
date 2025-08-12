@@ -1,12 +1,11 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import HeroSection from "./HeroSection";
 import BenefitsSection from "./BenefitsSection";
-import HospitalInfo from "./HospitalInfo";
 import AppointmentForm from "@/app/Components/AppointmentForm/AppointmentForm";
 import ProcessFlow from "./ProcessFlow";
-import TestimonialSection from "./TestimonialSection";
 import InfoSection from "./InfoSection";
-import HelpSupport from "./HelpSupport";
+import HelpSupport from "@/app/Components/HelpSupport/HelpSupport";
+import BookingInfo from "./BookingInfo";
 
 const Page = () => {
   return (
@@ -14,15 +13,11 @@ const Page = () => {
       <main>
         <HeroSection />
         <BenefitsSection />
-        <HospitalInfo />
-
-        {/* Wrap the AppointmentForm in Suspense */}
+        <ProcessFlow />
         <Suspense fallback={<div>Loading form...</div>}>
           <AppointmentForm />
         </Suspense>
-
-        <ProcessFlow />
-        <TestimonialSection />
+        <BookingInfo />
         <InfoSection />
         <HelpSupport />
       </main>

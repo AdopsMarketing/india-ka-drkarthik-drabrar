@@ -67,9 +67,11 @@ const Hero: React.FC = () => {
                   Book Consultation
                 </button>
               </Link>
-              <button className="bg-green-500 hover:bg-green-600 font-montserrat px-6 py-3 rounded-lg transition-colors">
-                WhatsApp Chat
-              </button>
+              <Link href={`https://wa.me/8618352089`}>
+                <button className="bg-green-500 hover:bg-green-600 font-montserrat px-6 py-3 rounded-lg transition-colors">
+                  WhatsApp Chat
+                </button>
+              </Link>
             </div>
 
             {/* Stats */}
