@@ -106,7 +106,7 @@ const AppointmentForm = () => {
       const response = await axios.post("/api/formsubmission", form);
       if (response.status === 201) {
         setIsSubmitting(false);
-        router.push('/thank-you');
+        window.location.href = '/thank-you';
       } else {
         alert("Error: " + response.data.error);
       }
