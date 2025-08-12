@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useUTM } from "../UTMs/UTMs";
 import Link from "next/link";
 import axios from "axios";
+import { log } from "util";
 
 const AppointmentForm = () => {
   const router = useRouter();
@@ -31,29 +32,27 @@ const AppointmentForm = () => {
   const [filePreview, setFilePreview] = useState({ fileName: "", fileType: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Update formData with path and UTM params
+  // ✅ Load initial location from pathname and UTM data
   useEffect(() => {
     const parts = pathname.split("/");
     let locationSlug = parts[parts.length - 1];
 
-    if (locationSlug === "book-consultation") {
-      locationSlug = formData.location;
+    if (locationSlug === "book-consultation" && !formData.location) {
+      locationSlug = "";
     }
 
     setFormData(prev => ({
       ...prev,
-      location: locationSlug,
-      utm_campaign: utm.utm_campaign,
-      utm_source: utm.utm_source,
-      utm_medium: utm.utm_medium,
-      utm_term: utm.utm_term,
-      utm_content: utm.utm_content,
+      location: prev.location || locationSlug,
+      utm_campaign: utm.utm_campaign || "",
+      utm_source: utm.utm_source || "",
+      utm_medium: utm.utm_medium || "",
+      utm_term: utm.utm_term || "",
+      utm_content: utm.utm_content || "",
     }));
   }, [pathname, utm]);
 
-
-  console.log(formData);
-
+  // ✅ Controlled input update
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -61,54 +60,64 @@ const AppointmentForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // ✅ Concern selection
   const handleConcernChange = (concern: string) => {
     setFormData(prev => ({ ...prev, primaryConcern: concern }));
   };
 
+  // ✅ File upload: type & size validation
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    setFormData(prev => ({ ...prev, file }));
 
     if (file) {
+      if (!["application/pdf", "image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
+        alert("Only PDF, JPG, and PNG files are allowed.");
+        e.target.value = "";
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        alert("File size must be less than 10MB.");
+        e.target.value = "";
+        return;
+      }
+
+      setFormData(prev => ({ ...prev, file }));
+
       if (file.type === "application/pdf") {
         setFilePreview({ fileName: file.name, fileType: "pdf" });
       } else if (file.type.startsWith("image/")) {
         setFilePreview({ fileName: file.name, fileType: "image" });
       }
     } else {
+      setFormData(prev => ({ ...prev, file: null }));
       setFilePreview({ fileName: "", fileType: "" });
     }
   };
 
+  // ✅ Form submission with better error handling
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.fullName || !formData.age || !formData.primaryConcern || !formData.preferredDate || !formData.phone) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    
     setIsSubmitting(true);
 
     const form = new FormData();
-    form.append("fullName", formData.fullName);
-    form.append("age", formData.age);
-    form.append("primaryConcern", formData.primaryConcern);
-    form.append("preferredDate", formData.preferredDate);
-    form.append("preferredTime", formData.preferredTime);
-    form.append("phone", formData.phone);
-    form.append("email", formData.email);
-    form.append("location", formData.location);
-    form.append("utm_campaign", utm.utm_campaign);
-    form.append("utm_source", utm.utm_source);
-    form.append("utm_medium", utm.utm_medium);
-    form.append("utm_term", utm.utm_term);
-    form.append("utm_content", utm.utm_content);
-    if (formData.file) {
-      form.append("file", formData.file);
-    }
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null) form.append(key, value as any);
+    });
 
     try {
       const response = await axios.post("/api/formsubmission", form);
+
       if (response.status === 201) {
-        setIsSubmitting(false);
-        window.location.href = '/thank-you';
+        router.push("/thank-you");
       } else {
-        alert("Error: " + response.data.error);
+        alert("Error: " + (response.data?.error || "Something went wrong."));
       }
 
       setFormData({
@@ -127,8 +136,11 @@ const AppointmentForm = () => {
         utm_term: "",
         utm_content: "",
       });
-    } catch (err) {
-      alert("Submission failed.");
+      setFilePreview({ fileName: "", fileType: "" });
+
+    } catch (error: any) {
+      alert("Submission failed: " + (error?.response?.data?.error || error?.message || "Unknown error"));
+    } finally {
       setIsSubmitting(false);
     }
   };
