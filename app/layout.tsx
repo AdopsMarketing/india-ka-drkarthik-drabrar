@@ -51,9 +51,7 @@ export default function RootLayout({
       >
         <Suspense fallback={null}>
           <UTMProvider>
-            <Navbar />
             {children}
-            <Footer />
           </UTMProvider>
         </Suspense>
       </body>
